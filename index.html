@@ -71,6 +71,116 @@
             background-color: #f4f0ea;
             padding: 50px 20px;
         }
+        .profile-photo-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 25px;
+        }
+        .profile-photo-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid rgba(212, 175, 55, 0.35);
+            box-shadow: 0 0 0 10px rgba(255,255,255,0.15);
+        }
+        .profile-photo-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            transform: translate(-50%, -50%);
+            box-shadow:
+                -95px 0 24px rgba(212, 175, 55, 0.85),
+                95px 0 24px rgba(212, 175, 55, 0.85);
+        }
+        .sparkle {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+        .sparkle::before,
+        .sparkle::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(212, 175, 55, 0.95);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.8);
+            filter: blur(0.5px);
+            animation: sparkle 2.5s ease-in-out infinite;
+        }
+        .sparkle::before {
+            top: 45%;
+            left: 8%;
+            transform: translateY(-50%) scale(0.95);
+        }
+        .sparkle::after {
+            top: 45%;
+            right: 8%;
+            transform: translateY(-50%) scale(0.95);
+            animation-delay: 1.25s;
+        }
+        .sparkle span {
+            content: '';
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255,255,255,0.8);
+            animation: sparkle-small 3s ease-in-out infinite;
+        }
+        .sparkle span:nth-child(1) { top: 35%; left: 10%; animation-delay: 0.4s; }
+        .sparkle span:nth-child(2) { top: 55%; left: 10%; animation-delay: 1.1s; }
+        .sparkle span:nth-child(3) { top: 35%; right: 10%; animation-delay: 1.8s; }
+        .sparkle span:nth-child(4) { top: 55%; right: 10%; animation-delay: 2.2s; }
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.75; transform: scale(0.85); }
+            50% { opacity: 1; transform: scale(1.15); }
+        }
+        @keyframes sparkle-small {
+            0%, 100% { opacity: 0.45; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        .flower {
+            position: absolute;
+            width: 56px;
+            height: 56px;
+            top: 8%;
+            right: -12px;
+            pointer-events: none;
+        }
+        .flower .petal {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: #f7e6cb;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(255,240,220,0.8);
+        }
+        .flower .petal-top { top: 0; left: 50%; transform: translateX(-50%); }
+        .flower .petal-right { top: 50%; right: 0; transform: translateY(-50%); }
+        .flower .petal-bottom { bottom: 0; left: 50%; transform: translateX(-50%); }
+        .flower .petal-left { top: 50%; left: 0; transform: translateY(-50%); }
+        .flower .center {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #d4af37;
+            border-radius: 50%;
+            box-shadow: 0 0 12px rgba(212,175,55,0.8);
+        }
         .profile-img {
             width: 180px; /* Highly optimized for mobile viewing */
             height: 180px;
@@ -78,7 +188,6 @@
             object-fit: cover;
             border: 4px solid #fff;
             box-shadow: 0 8px 16px rgba(0,0,0,0.05);
-            margin-bottom: 25px;
         }
         h2 {
             font-size: 1.6rem;
@@ -199,7 +308,7 @@
 
     <section id="landing" class="section">
         <h1>In Loving Memory of Our Dearest Mother</h1>
-        <div class="dates">January 1, 1979 — May 28, 2026</div>
+        <div class="dates">September 18, 1978 — May 28, 2026</div>
         
         <div class="verse-container">
             <p>"Her children rise up and call her blessed; her husband also, and he praises her: 'Many women have done excellently, but you surpass them all.'"</p>
@@ -215,7 +324,22 @@
     </section>
 
     <section id="profile" class="section">
-        <img src="media/mother-profile.jpg" alt="Our Beloved Mother" class="profile-img">
+        <div class="profile-photo-wrapper">
+            <img src="media/mother-profile.jpg" alt="Our Beloved Mother" class="profile-img">
+            <div class="flower">
+                <span class="petal petal-top"></span>
+                <span class="petal petal-right"></span>
+                <span class="petal petal-bottom"></span>
+                <span class="petal petal-left"></span>
+                <span class="center"></span>
+            </div>
+            <div class="sparkle">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
         <h2>A Life Beautifully Lived</h2>
         
         <div class="profile-text">
