@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In Loving Memory of Our Dearest Mother</title>
+    <style>
+        /* Global Styles & Serene Theme */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #fcfbf9;
+            color: #333;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+        }
+        .section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        /* Section 1: Landing & Verses */
+        #landing {
+            background: linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.95)), url('media/background.jpg') no-repeat center center/cover;
+            padding: 40px 20px;
+        }
+        h1 {
+            font-size: 2rem; /* Scaled down for mobile */
+            color: #564f46;
+            margin-bottom: 10px;
+            font-weight: 300;
+            padding: 0 10px;
+        }
+        .dates {
+            font-size: 1rem;
+            color: #8c8173;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+        .verse-container {
+            width: 100%;
+            max-width: 550px;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: #4a4a4a;
+            border-left: 3px solid #d4af37;
+            padding-left: 15px;
+            margin: 25px auto;
+            text-align: left;
+        }
+        .verse-author {
+            text-align: right;
+            font-size: 0.9rem;
+            color: #777;
+            margin-top: 8px;
+        }
+
+        /* Section 2: Mother's Profile & Background */
+        #profile {
+            background-color: #f4f0ea;
+            padding: 50px 20px;
+        }
+        .profile-img {
+            width: 180px; /* Highly optimized for mobile viewing */
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #fff;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+        h2 {
+            font-size: 1.6rem;
+            font-weight: 300;
+            color: #564f46;
+        }
+        .profile-text {
+            max-width: 600px;
+            font-size: 1rem;
+            color: #555;
+            text-align: justify;
+            margin-top: 15px;
+        }
+        .profile-text p {
+            margin-bottom: 15px;
+        }
+
+        /* Section 3: Automatic Gallery Carousel */
+        #gallery {
+            background-color: #1a1918;
+            color: #fff;
+            padding: 40px 10px;
+            display: block; /* Allows natural height scaling on mobile */
+        }
+        #gallery h2 {
+            font-weight: 300;
+            margin-bottom: 20px;
+            color: #e6dfd3;
+            text-align: center;
+        }
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 70vh; /* Utilizes 70% of the mobile screen height */
+            margin: 0 auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out;
+            transform: scale(1.03);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1a1918;
+        }
+        .slide img,
+        .slide video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Keeps media proportions perfect without stretching */
+        }
+        .slide video {
+            background-color: #000;
+        }
+        .slide.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Large, Mobile-Friendly Navigation Buttons */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            -webkit-tap-highlight-color: transparent; /* Removes blue flash on tap */
+        }
+        .nav-btn:active {
+            background: rgba(255,255,255,0.4);
+        }
+        .prev { left: 10px; }
+        .next { right: 10px; }
+
+        /* Smooth Scroll Indicator */
+        .scroll-down {
+            margin-top: 25px;
+            color: #8c8173;
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            display: inline-block;
+        }
+
+        /* Tablet & Desktop Adjustments */
+        @media (min-width: 768px) {
+            h1 { font-size: 2.8rem; }
+            h2 { font-size: 2rem; }
+            .dates { font-size: 1.2rem; }
+            .verse-container { font-size: 1.25rem; }
+            .profile-img { width: 220px; height: 220px; }
+            .profile-text { font-size: 1.1rem; }
+            .carousel-container { height: 550px; }
+            .section { padding: 60px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <section id="landing" class="section">
+        <h1>In Loving Memory of Our Dearest Mother</h1>
+        <div class="dates">January 1, 1979 — May 28, 2026</div>
+        
+        <div class="verse-container">
+            <p>"Her children rise up and call her blessed; her husband also, and he praises her: 'Many women have done excellently, but you surpass them all.'"</p>
+            <div class="verse-author">— Proverbs 31:28-29</div>
+        </div>
+
+        <div class="verse-container">
+            <p>"There are no farewells for us. Wherever you are, you will always be in my heart."</p>
+            <div class="verse-author">— Mahatma Gandhi</div>
+        </div>
+
+        <a href="#profile" class="scroll-down">Read Her Story ↓</a>
+    </section>
+
+    <section id="profile" class="section">
+        <img src="media/mother-profile.jpg" alt="Our Beloved Mother" class="profile-img">
+        <h2>A Life Beautifully Lived</h2>
+        
+        <div class="profile-text">
+            <p>Our mother was the guiding light of our family. Her kindness, warmth, and boundless love shaped who we are today. She found joy in the simplest moments and always put the needs of others before her own.</p>
+            <p>This space is dedicated to celebrating her beautiful journey, the lives she touched, and the irreplaceable memories she left behind. Though she is no longer with us in body, her legacy of love will live on forever in our hearts.</p>
+        </div>
+
+        <a href="#gallery" class="scroll-down" style="color: #555;">View Precious Memories ↓</a>
+    </section>
+
+    <section id="gallery" class="section">
+        <h2>Precious Moments</h2>
+        
+        <div class="carousel-container">
+            <button class="nav-btn prev" onclick="changeSlide(-1)" aria-label="Previous Slide">&#10094;</button>
+            <button class="nav-btn next" onclick="changeSlide(1)" aria-label="Next Slide">&#10095;</button>
+
+            <div id="dynamic-slides"></div>
+        </div>
+    </section>
+
+    <script>
+        // ==========================================
+        // DYNAMIC PLAYLIST: ADD YOUR IMAGES HERE
+        // ==========================================
+        const mediaItems = [
+            { type: 'image', src: 'photo1.jpg', alt: 'Our mother smiling in the garden' },
+            { type: 'video', src: 'video1.mp4', poster: 'video1-poster.jpg', alt: 'A cherished family video' },
+            { type: 'image', src: 'photo2.jpg', alt: 'Warm memory of a family gathering' },
+            { type: 'image', src: 'photo3.jpg', alt: 'A quiet moment of reflection' },
+            { type: 'video', src: 'video2.mp4', poster: 'video2-poster.jpg', alt: 'Another special memory on film' }
+        ];
+        
+        const folderPath = 'media/';
+        const slidesContainer = document.getElementById('dynamic-slides');
+
+        // Dynamically build the gallery and video slides
+        mediaItems.forEach((item, index) => {
+            const slideDiv = document.createElement('div');
+            slideDiv.className = `slide ${index === 0 ? 'active' : ''}`;
+
+            if (item.type === 'video') {
+                const video = document.createElement('video');
+                video.src = folderPath + item.src;
+                if (item.poster) video.poster = folderPath + item.poster;
+                video.setAttribute('aria-label', item.alt);
+                video.muted = true;
+                video.controls = true;
+                video.playsInline = true;
+                video.preload = 'metadata';
+                slideDiv.appendChild(video);
+            } else {
+                const img = document.createElement('img');
+                img.src = folderPath + item.src;
+                img.alt = item.alt;
+                slideDiv.appendChild(img);
+            }
+
+            slidesContainer.appendChild(slideDiv);
+        });
+
+        // ==========================================
+        // CAROUSEL LOGIC WITH IMAGE + VIDEO SUPPORT
+        // ==========================================
+        let currentSlideIndex = 0;
+        const slides = document.getElementsByClassName('slide');
+        const slideInterval = 5000; // default duration for image slides
+        let autoSlideTimer;
+
+        function resetVideos() {
+            Array.from(slides).forEach((slide) => {
+                const video = slide.querySelector('video');
+                if (video) {
+                    video.pause();
+                    video.currentTime = 0;
+                    video.onended = null;
+                }
+            });
+        }
+
+        function showSlide(index) {
+            if (index >= slides.length) { currentSlideIndex = 0; }
+            else if (index < 0) { currentSlideIndex = slides.length - 1; }
+            else { currentSlideIndex = index; }
+
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+
+            const activeSlide = slides[currentSlideIndex];
+            if (!activeSlide) return;
+
+            activeSlide.classList.add('active');
+            resetVideos();
+
+            const activeVideo = activeSlide.querySelector('video');
+            if (activeVideo) {
+                clearInterval(autoSlideTimer);
+                activeVideo.currentTime = 0;
+                activeVideo.muted = true;
+                activeVideo.play().catch(() => {
+                    // Some browsers require user interaction for autoplay, controls remain available
+                });
+                activeVideo.onended = () => {
+                    showSlide(currentSlideIndex + 1);
+                };
+            } else {
+                startAutoSlide();
+            }
+        }
+
+        function changeSlide(direction) {
+            clearInterval(autoSlideTimer);
+            showSlide(currentSlideIndex + direction);
+        }
+
+        function startAutoSlide() {
+            clearInterval(autoSlideTimer);
+            autoSlideTimer = setInterval(() => {
+                showSlide(currentSlideIndex + 1);
+            }, slideInterval);
+        }
+
+        if (mediaItems.length > 0) {
+            showSlide(0);
+        }
+    </script>
+
+</body>
+</html>
