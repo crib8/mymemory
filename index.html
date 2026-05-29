@@ -287,6 +287,16 @@
         }
         .prev { left: 10px; }
         .next { right: 10px; }
+        .audio-hint {
+            margin: 18px auto 0;
+            padding: 10px 16px;
+            background: rgba(255,255,255,0.95);
+            color: #564f46;
+            border-radius: 999px;
+            font-size: 0.95rem;
+            max-width: 320px;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+        }
 
         /* Smooth Scroll Indicator */
         .scroll-down {
@@ -360,7 +370,7 @@
 
     <section id="gallery" class="section">
         <h2>Precious Moments</h2>
-        
+        <div id="audio-hint" class="audio-hint">Tap anywhere to enable background sound</div>
         <div class="carousel-container">
             <button class="nav-btn prev" onclick="changeSlide(-1)" aria-label="Previous Slide">&#10094;</button>
             <button class="nav-btn next" onclick="changeSlide(1)" aria-label="Next Slide">&#10095;</button>
@@ -381,16 +391,44 @@
             { type: 'video', src: 'video2.mp4', poster: 'video2-poster.jpg', alt: 'Another special memory on film' }
         ];
         
-        const folderPath = '/media/';
+        const folderPath = 'media/';
         const slidesContainer = document.getElementById('dynamic-slides');
         const gallerySection = document.getElementById('gallery');
-        const backgroundAudio = new Audio(folderPath + 'Youll Be In My Heart.mp3');
+        const audioHint = document.getElementById('audio-hint');
+        const backgroundAudio = new Audio(folderPath + 'bgmusic.mp3');
         let galleryVisible = false;
         let videoPlaying = false;
+        let audioUnlocked = false;
 
         backgroundAudio.loop = true;
         backgroundAudio.preload = 'auto';
         backgroundAudio.volume = 0.35;
+        backgroundAudio.muted = true;
+        backgroundAudio.play().catch(() => {
+            // Muted autoplay is often allowed, but some browsers still block until interaction.
+        });
+
+        function unlockBackgroundAudio() {
+            if (audioUnlocked) return;
+            audioUnlocked = true;
+            backgroundAudio.muted = false;
+            hideAudioHint();
+            backgroundAudio.play().catch(() => {
+                // If browser still blocks, user interaction has unlocked the audio context.
+            });
+            checkBackgroundMusic();
+            document.removeEventListener('click', unlockBackgroundAudio);
+            document.removeEventListener('touchstart', unlockBackgroundAudio);
+        }
+
+        document.addEventListener('click', unlockBackgroundAudio, { once: true });
+        document.addEventListener('touchstart', unlockBackgroundAudio, { once: true });
+
+        function hideAudioHint() {
+            if (audioHint) {
+                audioHint.style.display = 'none';
+            }
+        }
 
         const galleryObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -407,7 +445,6 @@
                     } else {
                         stopAutoSlide();
                         pauseActiveVideo();
-                        pauseBackgroundMusic();
                     }
                 }
             });
@@ -416,7 +453,7 @@
         galleryObserver.observe(gallerySection);
 
         function playBackgroundMusic() {
-            if (!galleryVisible || videoPlaying) return;
+            if (videoPlaying || !audioUnlocked) return;
             backgroundAudio.play().catch(() => {
                 // Playback may require user interaction in some browsers.
             });
@@ -427,7 +464,7 @@
         }
 
         function checkBackgroundMusic() {
-            if (galleryVisible && !videoPlaying) {
+            if (!videoPlaying) {
                 playBackgroundMusic();
             } else {
                 pauseBackgroundMusic();
