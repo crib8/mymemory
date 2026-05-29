@@ -494,6 +494,10 @@
                 video.setAttribute('aria-label', item.alt);
                 video.controls = true;
                 video.playsInline = true;
+                video.setAttribute('playsinline', '');
+                video.setAttribute('webkit-playsinline', '');
+                video.muted = true;
+                video.setAttribute('muted', '');
                 video.preload = 'metadata';
                 video.addEventListener('play', () => {
                     videoPlaying = true;
@@ -557,7 +561,8 @@
             if (activeVideo) {
                 stopAutoSlide();
                 activeVideo.currentTime = 0;
-                activeVideo.muted = false;
+                activeVideo.muted = true;
+                activeVideo.setAttribute('muted', '');
                 activeVideo.play().catch(() => {
                     // Some browsers require user interaction for autoplay, controls remain available
                 });
