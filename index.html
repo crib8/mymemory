@@ -492,7 +492,6 @@
                 video.src = folderPath + item.src;
                 if (item.poster) video.poster = folderPath + item.poster;
                 video.setAttribute('aria-label', item.alt);
-                video.muted = true;
                 video.controls = true;
                 video.playsInline = true;
                 video.preload = 'metadata';
@@ -558,7 +557,7 @@
             if (activeVideo) {
                 stopAutoSlide();
                 activeVideo.currentTime = 0;
-                activeVideo.muted = true;
+                activeVideo.muted = false;
                 activeVideo.play().catch(() => {
                     // Some browsers require user interaction for autoplay, controls remain available
                 });
