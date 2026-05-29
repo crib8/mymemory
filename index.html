@@ -374,15 +374,76 @@
         // DYNAMIC PLAYLIST: ADD YOUR IMAGES HERE
         // ==========================================
         const mediaItems = [
+            { type: 'video', src: 'video-with-ayesha.mp4', poster: 'video1-poster.jpg', alt: 'A cherished family video' },
             { type: 'image', src: 'photo1.jpg', alt: 'Our mother smiling in the garden' },
-            { type: 'video', src: 'video1.mp4', poster: 'video1-poster.jpg', alt: 'A cherished family video' },
             { type: 'image', src: 'photo2.jpg', alt: 'Warm memory of a family gathering' },
             { type: 'image', src: 'photo3.jpg', alt: 'A quiet moment of reflection' },
             { type: 'video', src: 'video2.mp4', poster: 'video2-poster.jpg', alt: 'Another special memory on film' }
         ];
         
-        const folderPath = 'media/';
+        const folderPath = '/media/';
         const slidesContainer = document.getElementById('dynamic-slides');
+        const gallerySection = document.getElementById('gallery');
+        const backgroundAudio = new Audio(folderPath + 'Youll Be In My Heart.mp3');
+        let galleryVisible = false;
+        let videoPlaying = false;
+
+        backgroundAudio.loop = true;
+        backgroundAudio.preload = 'auto';
+        backgroundAudio.volume = 0.35;
+
+        const galleryObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.target === gallerySection) {
+                    galleryVisible = entry.isIntersecting;
+                    if (galleryVisible) {
+                        const activeSlide = slides[currentSlideIndex];
+                        if (activeSlide && activeSlide.querySelector('video')) {
+                            showSlide(currentSlideIndex);
+                        } else {
+                            startAutoSlide();
+                            checkBackgroundMusic();
+                        }
+                    } else {
+                        stopAutoSlide();
+                        pauseActiveVideo();
+                        pauseBackgroundMusic();
+                    }
+                }
+            });
+        }, { threshold: 0.45 });
+
+        galleryObserver.observe(gallerySection);
+
+        function playBackgroundMusic() {
+            if (!galleryVisible || videoPlaying) return;
+            backgroundAudio.play().catch(() => {
+                // Playback may require user interaction in some browsers.
+            });
+        }
+
+        function pauseBackgroundMusic() {
+            backgroundAudio.pause();
+        }
+
+        function checkBackgroundMusic() {
+            if (galleryVisible && !videoPlaying) {
+                playBackgroundMusic();
+            } else {
+                pauseBackgroundMusic();
+            }
+        }
+
+        function pauseActiveVideo() {
+            const activeVideo = document.querySelector('.slide.active video');
+            if (activeVideo) {
+                activeVideo.pause();
+            }
+        }
+
+        function stopAutoSlide() {
+            clearInterval(autoSlideTimer);
+        }
 
         // Dynamically build the gallery and video slides
         mediaItems.forEach((item, index) => {
@@ -398,6 +459,19 @@
                 video.controls = true;
                 video.playsInline = true;
                 video.preload = 'metadata';
+                video.addEventListener('play', () => {
+                    videoPlaying = true;
+                    pauseBackgroundMusic();
+                });
+                video.addEventListener('pause', () => {
+                    if (!video.paused) return;
+                    videoPlaying = false;
+                    checkBackgroundMusic();
+                });
+                video.addEventListener('ended', () => {
+                    videoPlaying = false;
+                    checkBackgroundMusic();
+                });
                 slideDiv.appendChild(video);
             } else {
                 const img = document.createElement('img');
@@ -445,17 +519,22 @@
 
             const activeVideo = activeSlide.querySelector('video');
             if (activeVideo) {
-                clearInterval(autoSlideTimer);
+                stopAutoSlide();
                 activeVideo.currentTime = 0;
                 activeVideo.muted = true;
                 activeVideo.play().catch(() => {
                     // Some browsers require user interaction for autoplay, controls remain available
                 });
                 activeVideo.onended = () => {
+                    videoPlaying = false;
+                    checkBackgroundMusic();
                     showSlide(currentSlideIndex + 1);
                 };
             } else {
-                startAutoSlide();
+                if (galleryVisible) {
+                    startAutoSlide();
+                }
+                checkBackgroundMusic();
             }
         }
 
