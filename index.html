@@ -242,6 +242,8 @@
             width: 100%;
             height: 100%;
             opacity: 0;
+            visibility: hidden;
+            z-index: 1;
             transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out;
             transform: scale(1.03);
             display: flex;
@@ -260,6 +262,8 @@
         }
         .slide.active {
             opacity: 1;
+            visibility: visible;
+            z-index: 5;
             transform: scale(1);
         }
 
@@ -324,7 +328,7 @@
 <body>
 
     <section id="landing" class="section">
-        <h1>In Loving Memory of Our Dearest Mother</h1>
+        <h1>Mama, a good wife, a good mother, a good woman</h1>
         <div class="dates">September 18, 1978 — May 28, 2026</div>
         
         <div class="verse-container">
@@ -358,7 +362,7 @@
             </div>
         </div>
         <h2>Anna Christie Halili</h2>
-        <p class="profile-subtitle">A Life Beautifully Lived</p>
+        <p class="profile-subtitle">In Loving Memory of Our Dearest Mother</p>
         
         <div class="profile-text">
             <p>Our mother was the guiding light of our family. Her kindness, warmth, and boundless love shaped who we are today. She found joy in the simplest moments and always put the needs of others before her own.</p>
@@ -384,11 +388,30 @@
         // DYNAMIC PLAYLIST: ADD YOUR IMAGES HERE
         // ==========================================
         const mediaItems = [
-            { type: 'video', src: 'video-with-ayesha.mp4', poster: 'video1-poster.jpg', alt: 'A cherished family video' },
-            { type: 'image', src: 'photo1.jpg', alt: 'Our mother smiling in the garden' },
-            { type: 'image', src: 'photo2.jpg', alt: 'Warm memory of a family gathering' },
-            { type: 'image', src: 'photo3.jpg', alt: 'A quiet moment of reflection' },
-            { type: 'video', src: 'video2.mp4', poster: 'video2-poster.jpg', alt: 'Another special memory on film' }
+            { type: 'video', src: 'In-Loving-Memory-of-Anna-Christie-Halili_part000.mp4', poster: 'mother-profile.jpg', alt: 'A cherished family video' },
+            { type: 'video', src: 'In-Loving-Memory-of-Anna-Christie-Halili_part001.mp4', poster: 'mother-profile.jpg', alt: 'A cherished family video' },
+            { type: 'video', src: 'In-Loving-Memory-of-Anna-Christie-Halili_part002.mp4', poster: 'mother-profile.jpg' ,alt: 'A cherished family video' },
+            { type: 'video', src: 'In-Loving-Memory-of-Anna-Christie-Halili_part003.mp4', poster: 'mother-profile.jpg', alt: 'A cherished family video' },
+            { type: 'video', src: 'In-Loving-Memory-of-Anna-Christie-Halili_part004.mp4', poster: 'mother-profile.jpg', alt: 'A cherished family video' },
+            { type: 'video', src: 'In-Loving-Memory-of-Anna-Christie-Halili_part005.mp4', poster: 'mother-profile.jpg', alt: 'A cherished family video' },
+            { type: 'video', src: 'In-Loving-Memory-of-Anna-Christie-Halili_part006.mp4', poster: 'mother-profile.jpg', alt: 'A cherished family video' },
+            { type: 'video', src: 'In-Loving-Memory-of-Anna-Christie-Halili_part007.mp4', poster: 'mother-profile.jpg', alt: 'A cherished family video' },
+            { type: 'video', src: 'In-Loving-Memory-of-Anna-Christie-Halili_part008.mp4', poster: 'mother-profile.jpg', alt: 'A cherished family video' },
+            { type: 'video', src: 'In-Loving-Memory-of-Anna-Christie-Halili_part009.mp4', poster: 'mother-profile.jpg', alt: 'A cherished family video' },
+            { type: 'video', src: 'In-Loving-Memory-of-Anna-Christie-Halili_part010.mp4', poster: 'mother-profile.jpg', alt: 'A cherished family video' },
+            { type: 'video', src: 'In-Loving-Memory-of-Anna-Christie-Halili_part011.mp4', poster: 'mother-profile.jpg', alt: 'A cherished family video' },
+            { type: 'video', src: 'In-Loving-Memory-of-Anna-Christie-Halili_part012.mp4', poster: 'mother-profile.jpg', alt: 'A cherished family video' },
+            { type: 'video', src: 'In-Loving-Memory-of-Anna-Christie-Halili_part013.mp4', poster: 'mother-profile.jpg', alt: 'A cherished family video' },
+            { type: 'video', src: 'In-Loving-Memory-of-Anna-Christie-Halili_part014.mp4', poster: 'mother-profile.jpg', alt: 'A cherished family video' },
+            { type: 'video', src: 'In-Loving-Memory-of-Anna-Christie-Halili_part015.mp4', poster: 'mother-profile.jpg', alt: 'A cherished family video' },
+            { type: 'video', src: 'In-Loving-Memory-of-Anna-Christie-Halili_part016.mp4', poster: 'mother-profile.jpg', alt: 'A cherished family video' },
+            { type: 'video', src: 'In-Loving-Memory-of-Anna-Christie-Halili_part017.mp4', poster: 'mother-profile.jpg', alt: 'A cherished family video' },
+            { type: 'video', src: 'In-Loving-Memory-of-Anna-Christie-Halili_part018.mp4', alt: 'A cherished family video' }
+            
+            // { type: 'image', src: 'photo1.jpg', alt: 'Our mother smiling in the garden' },
+            // { type: 'image', src: 'photo2.jpg', alt: 'Warm memory of a family gathering' },
+            // { type: 'image', src: 'photo3.jpg', alt: 'A quiet moment of reflection' },
+            // { type: 'video', src: 'video2.mp4', poster: 'video2-poster.jpg', alt: 'Another special memory on film' }
         ];
         
         const folderPath = 'media/';
@@ -412,6 +435,15 @@
             if (audioUnlocked) return;
             audioUnlocked = true;
             backgroundAudio.muted = false;
+            // Unmute the currently active video in the gallery if there is one
+            const activeVideo = document.querySelector('.slide.active video');
+            if (activeVideo) {
+                activeVideo.muted = false;
+                activeVideo.removeAttribute('muted');
+                activeVideo.play().then(() => {
+                    setTimeout(() => activeVideo.removeAttribute('poster'), 150);
+                }).catch(() => {});
+            }
             hideAudioHint();
             backgroundAudio.play().catch(() => {
                 // If browser still blocks, user interaction has unlocked the audio context.
@@ -423,6 +455,22 @@
 
         document.addEventListener('click', unlockBackgroundAudio, { once: true });
         document.addEventListener('touchstart', unlockBackgroundAudio, { once: true });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                pauseActiveVideo();
+                pauseBackgroundMusic();
+            } else {
+                if (galleryVisible) {
+                    const activeVideo = slides[currentSlideIndex]?.querySelector('video');
+                    if (activeVideo) {
+                        activeVideo.play().catch(() => {});
+                    }
+                } else {
+                    checkBackgroundMusic();
+                }
+            }
+        });
 
         function hideAudioHint() {
             if (audioHint) {
@@ -494,8 +542,18 @@
                 video.setAttribute('aria-label', item.alt);
                 video.controls = true;
                 video.playsInline = true;
-                video.preload = 'metadata';
+                video.setAttribute('playsinline', '');
+                video.setAttribute('webkit-playsinline', '');
+                video.muted = !audioUnlocked;
+                if (video.muted) {
+                    video.setAttribute('muted', '');
+                }
+                video.preload = 'auto';
                 video.addEventListener('play', () => {
+                    if (!galleryVisible || document.hidden) {
+                        video.pause();
+                        return;
+                    }
                     videoPlaying = true;
                     pauseBackgroundMusic();
                 });
@@ -557,10 +615,22 @@
             if (activeVideo) {
                 stopAutoSlide();
                 activeVideo.currentTime = 0;
-                activeVideo.muted = false;
-                activeVideo.play().catch(() => {
-                    // Some browsers require user interaction for autoplay, controls remain available
-                });
+                activeVideo.muted = !audioUnlocked;
+                
+                // Re-initialize the specific video source to ensure the decoder starts fresh
+                activeVideo.load();
+
+                if (activeVideo.muted) {
+                    activeVideo.setAttribute('muted', '');
+                } else {
+                    activeVideo.removeAttribute('muted');
+                }
+
+                if (galleryVisible && !document.hidden) {
+                    activeVideo.play().then(() => {
+                        setTimeout(() => activeVideo.removeAttribute('poster'), 150);
+                    }).catch(() => {});
+                }
                 activeVideo.onended = () => {
                     videoPlaying = false;
                     checkBackgroundMusic();
