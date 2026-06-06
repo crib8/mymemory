@@ -544,11 +544,9 @@
                 video.playsInline = true;
                 video.setAttribute('playsinline', '');
                 video.setAttribute('webkit-playsinline', '');
-                video.muted = !audioUnlocked;
-                if (video.muted) {
-                    video.setAttribute('muted', '');
-                }
-                video.preload = 'auto';
+                video.muted = false;
+                
+                video.preload = 'metadata';
                 video.addEventListener('play', () => {
                     if (!galleryVisible || document.hidden) {
                         video.pause();
@@ -615,22 +613,11 @@
             if (activeVideo) {
                 stopAutoSlide();
                 activeVideo.currentTime = 0;
-                activeVideo.muted = !audioUnlocked;
-                
-                // Re-initialize the specific video source to ensure the decoder starts fresh
-                activeVideo.load();
-
-                if (activeVideo.muted) {
-                    activeVideo.setAttribute('muted', '');
-                } else {
-                    activeVideo.removeAttribute('muted');
-                }
-
-                if (galleryVisible && !document.hidden) {
-                    activeVideo.play().then(() => {
-                        setTimeout(() => activeVideo.removeAttribute('poster'), 150);
-                    }).catch(() => {});
-                }
+                activeVideo.muted = true;
+                activeVideo.setAttribute('muted', '');
+                activeVideo.play().catch(() => {
+                    // Some browsers require user interaction for autoplay, controls remain available
+                });
                 activeVideo.onended = () => {
                     videoPlaying = false;
                     checkBackgroundMusic();
