@@ -555,7 +555,6 @@
                 video.playsInline = true;
                 video.setAttribute('playsinline', '');
                 video.setAttribute('webkit-playsinline', '');
-                video.muted = false;
                 
                 video.preload = 'metadata';
                 video.addEventListener('play', () => {
@@ -624,10 +623,20 @@
             if (activeVideo) {
                 stopAutoSlide();
                 activeVideo.currentTime = 0;
-                activeVideo.muted = true;
-                activeVideo.setAttribute('muted', '');
+                
+                // Unmute if the user has already interacted with the page
+                activeVideo.muted = !audioUnlocked;
+                if (audioUnlocked) {
+                    activeVideo.removeAttribute('muted');
+                } else {
+                    activeVideo.setAttribute('muted', '');
+                }
+
                 activeVideo.play().catch(() => {
-                    // Some browsers require user interaction for autoplay, controls remain available
+                    // Fallback to muted playback if unmuted autoplay is blocked
+                    activeVideo.muted = true;
+                    activeVideo.setAttribute('muted', '');
+                    activeVideo.play().catch(() => {});
                 });
                 activeVideo.onended = () => {
                     videoPlaying = false;
