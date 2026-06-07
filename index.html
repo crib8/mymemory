@@ -418,15 +418,26 @@
         const slidesContainer = document.getElementById('dynamic-slides');
         const gallerySection = document.getElementById('gallery');
         const audioHint = document.getElementById('audio-hint');
-        const backgroundAudio = new Audio(folderPath + 'bgmusic.mp3');
+
+        // Background Music Playlist
+        const bgMusicList = [ 'The_Steady_Quiet.mp3', 'Before_the_Titles.mp3',  'bgmusic.mp3'];
+        let currentBgIndex = 0;
+        const backgroundAudio = new Audio(folderPath + bgMusicList[currentBgIndex]);
+
         let galleryVisible = false;
         let videoPlaying = false;
         let audioUnlocked = false;
 
-        backgroundAudio.loop = true;
         backgroundAudio.preload = 'auto';
         backgroundAudio.volume = 0.35;
         backgroundAudio.muted = true;
+
+        backgroundAudio.addEventListener('ended', () => {
+            currentBgIndex = (currentBgIndex + 1) % bgMusicList.length;
+            backgroundAudio.src = folderPath + bgMusicList[currentBgIndex];
+            backgroundAudio.play().catch(() => {});
+        });
+
         backgroundAudio.play().catch(() => {
             // Muted autoplay is often allowed, but some browsers still block until interaction.
         });
